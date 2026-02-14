@@ -49,6 +49,62 @@ def load_json(path: Path) -> dict:
         return json.load(f)
 
 
+def resolve_precomputed_curves(
+    model_name: str,
+    selected_model: object,
+    selected_metrics: dict,
+) -> tuple[list[float], list[float], list[float], list[float], float, float]:
+    model_payload = detailed_metrics.get(model_name, {})
+    roc_payload = model_payload.get("roc_curve")
+    pr_payload = model_payload.get("pr_curve")
+
+    if (
+        isinstance(roc_payload, dict)
+        and isinstance(pr_payload, dict)
+        and "fpr" in roc_payload
+        and "tpr" in roc_payload
+        and "recall" in pr_payload
+        and "precision" in pr_payload
+    ):
+        return (
+            roc_payload["fpr"],
+            roc_payload["tpr"],
+            pr_payload["recall"],
+            pr_payload["precision"],
+            float(selected_metrics.get("AUC", 0.0)),
+            float(selected_metrics.get("AveragePrecision", 0.0)),
+        )
+
+    test_df = pd.read_csv(DATA_DIR / "adult_test_with_target.csv")
+    X_test = test_df[metadata["feature_columns"]].copy()
+    y_true = test_df["income"].copy()
+
+    if y_true.dtype == "object":
+        y_true = y_true.astype(str).str.strip().replace(
+            {
+                metadata["target_mapping"]["0"]: 0,
+                metadata["target_mapping"]["1"]: 1,
+            }
+        )
+    y_true = pd.to_numeric(y_true, errors="coerce")
+    valid_mask = y_true.isin([0, 1])
+    X_test = X_test.loc[valid_mask]
+    y_true = y_true.loc[valid_mask].astype(int)
+
+    y_score = selected_model.predict_proba(X_test)[:, 1]
+    roc_fpr, roc_tpr, _ = roc_curve(y_true, y_score)
+    pr_precision, pr_recall, _ = precision_recall_curve(y_true, y_score)
+
+    return (
+        roc_fpr.tolist(),
+        roc_tpr.tolist(),
+        pr_recall.tolist(),
+        pr_precision.tolist(),
+        float(auc(roc_fpr, roc_tpr)),
+        float(average_precision_score(y_true, y_score)),
+    )
+
+
 @st.cache_resource
 def load_models() -> dict[str, object]:
     model_files = {
@@ -119,15 +175,15 @@ input_df = st.session_state.get("uploaded_df")
 if input_df is None:
     cm = detailed_metrics[model_name]["confusion_matrix"]
     report = detailed_metrics[model_name]["classification_report"]
-    roc_payload = detailed_metrics[model_name]["roc_curve"]
-    pr_payload = detailed_metrics[model_name]["pr_curve"]
-    roc_fpr = roc_payload["fpr"]
-    roc_tpr = roc_payload["tpr"]
-    pr_recall = pr_payload["recall"]
-    pr_precision = pr_payload["precision"]
-    roc_auc_value = selected_metrics["AUC"]
-    pr_auc_value = selected_metrics["AveragePrecision"]
-    st.caption("Showing precomputed results from the held-out test split.")
+    (
+        roc_fpr,
+        roc_tpr,
+        pr_recall,
+        pr_precision,
+        roc_auc_value,
+        pr_auc_value,
+    ) = resolve_precomputed_curves(model_name, selected_model, selected_metrics)
+    st.caption("Showing held-out test results (precomputed where available).")
 else:
     feature_columns = metadata["feature_columns"]
     missing_cols = [c for c in feature_columns if c not in input_df.columns]
@@ -159,15 +215,15 @@ else:
     else:
         cm = detailed_metrics[model_name]["confusion_matrix"]
         report = detailed_metrics[model_name]["classification_report"]
-        roc_payload = detailed_metrics[model_name]["roc_curve"]
-        pr_payload = detailed_metrics[model_name]["pr_curve"]
-        roc_fpr = roc_payload["fpr"]
-        roc_tpr = roc_payload["tpr"]
-        pr_recall = pr_payload["recall"]
-        pr_precision = pr_payload["precision"]
-        roc_auc_value = selected_metrics["AUC"]
-        pr_auc_value = selected_metrics["AveragePrecision"]
-        st.caption("Uploaded CSV has no `income` column, showing precomputed held-out test results.")
+        (
+            roc_fpr,
+            roc_tpr,
+            pr_recall,
+            pr_precision,
+            roc_auc_value,
+            pr_auc_value,
+        ) = resolve_precomputed_curves(model_name, selected_model, selected_metrics)
+        st.caption("Uploaded CSV has no `income` column, showing held-out test results.")
 
 cm_col, report_col = st.columns([1, 1.2], gap="large")
 
