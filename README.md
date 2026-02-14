@@ -1,9 +1,9 @@
 # IncomeLens-AI
 
-## a. Problem statement
+## Problem statement
 Build an end-to-end machine learning classification system that predicts whether a person earns more than 50K per year (`>50K`) using demographic and employment features from the UCI Adult dataset. The project implements 6 required ML classifiers, evaluates each with required metrics, and provides an interactive Streamlit interface for inference and model comparison.
 
-## b. Dataset description
+## Dataset description
 - **Dataset Source:** UCI Machine Learning Repository
 - **Dataset Name:** Adult (Census Income)
 - **UCI ID:** 2
@@ -22,7 +22,7 @@ Build an end-to-end machine learning classification system that predicts whether
 
 Because the dataset is moderately imbalanced, MCC, AUC, and precision-recall behavior were considered alongside raw accuracy.
 
-## c. Models used
+## Models used
 All six required models are trained on the **same train/test split**.
 
 1. Logistic Regression
