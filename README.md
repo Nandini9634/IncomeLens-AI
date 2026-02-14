@@ -148,8 +148,3 @@ streamlit run app.py
 4. Select repo/branch and `app.py`.
 5. Deploy.
 
-## Mandatory submission checklist
-- GitHub repository link
-- Live Streamlit app link
-- BITS Virtual Lab execution screenshot (must be added in final PDF)
-- README content included in submitted PDF
