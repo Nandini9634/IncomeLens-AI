@@ -38,6 +38,27 @@ st.markdown(
         color: #e2e8f0;
         margin-bottom: 1rem;
     }
+    .stButton > button {
+        background-color: #1e3a8a !important;
+        color: #ffffff !important;
+        border: 1px solid #1e3a8a !important;
+    }
+    .stButton > button:hover {
+        background-color: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        color: #ffffff !important;
+    }
+    div[data-baseweb="select"] > div {
+        background-color: #1e3a8a !important;
+        border-color: #1e3a8a !important;
+    }
+    div[data-baseweb="select"] * {
+        color: #ffffff !important;
+    }
+    [data-testid="stFileUploaderDropzone"] {
+        border: 1px solid #1e3a8a !important;
+        background: rgba(30, 58, 138, 0.08) !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
