@@ -1,0 +1,30 @@
+{
+  "Decision Tree": {
+    "best_params": {
+      "max_depth": 10,
+      "min_samples_split": 10,
+      "min_samples_leaf": 3
+    },
+    "validation_f1": 0.664823,
+    "n_candidates_evaluated": 3
+  },
+  "Random Forest (Ensemble)": {
+    "best_params": {
+      "n_estimators": 350,
+      "max_depth": 18,
+      "min_samples_leaf": 1
+    },
+    "validation_f1": 0.683499,
+    "n_candidates_evaluated": 3
+  },
+  "XGBoost (Ensemble)": {
+    "best_params": {
+      "n_estimators": 360,
+      "learning_rate": 0.06,
+      "max_depth": 6,
+      "subsample": 0.9
+    },
+    "validation_f1": 0.719063,
+    "n_candidates_evaluated": 3
+  }
+}

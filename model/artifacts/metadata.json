@@ -1,0 +1,34 @@
+{
+  "dataset_name": "UCI Adult Income",
+  "dataset_id": 2,
+  "n_instances": 48842,
+  "n_features": 14,
+  "feature_columns": [
+    "age",
+    "workclass",
+    "fnlwgt",
+    "education",
+    "education-num",
+    "marital-status",
+    "occupation",
+    "relationship",
+    "race",
+    "sex",
+    "capital-gain",
+    "capital-loss",
+    "hours-per-week",
+    "native-country"
+  ],
+  "target_column": "income",
+  "target_mapping": {
+    "0": "<=50K",
+    "1": ">50K"
+  },
+  "class_distribution": {
+    "0": 37155,
+    "1": 11687
+  },
+  "imbalance_ratio_majority_to_minority": 3.1792,
+  "test_size": 0.2,
+  "random_state": 42
+}
