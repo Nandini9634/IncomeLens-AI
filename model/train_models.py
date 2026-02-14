@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import gzip
 import json
+import pickle
 from pathlib import Path
 
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -263,8 +264,9 @@ def main() -> None:
             "pr_curve": extra["pr_curve"],
         }
 
-        model_path = artifacts_dir / f"{model_name.lower().replace(' ', '_').replace('(', '').replace(')', '')}.joblib"
-        joblib.dump(pipeline, model_path)
+        model_path = artifacts_dir / f"{model_name.lower().replace(' ', '_').replace('(', '').replace(')', '')}.pkl.gz"
+        with gzip.open(model_path, "wb") as f:
+            pickle.dump(pipeline, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     metrics_df = pd.DataFrame(metrics_rows)
     metrics_df.to_csv(artifacts_dir / "metrics_comparison.csv", index=False)

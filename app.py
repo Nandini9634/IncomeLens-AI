@@ -1,15 +1,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import sys
+import gzip
+import pickle
 from pathlib import Path
 
-try:
-    import joblib
-except ModuleNotFoundError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib==1.5.3"])
-    import joblib
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -57,16 +52,17 @@ def load_json(path: Path) -> dict:
 @st.cache_resource
 def load_models() -> dict[str, object]:
     model_files = {
-        "Logistic Regression": "logistic_regression.joblib",
-        "Decision Tree": "decision_tree.joblib",
-        "kNN": "knn.joblib",
-        "Naive Bayes": "naive_bayes.joblib",
-        "Random Forest (Ensemble)": "random_forest_ensemble.joblib",
-        "XGBoost (Ensemble)": "xgboost_ensemble.joblib",
+        "Logistic Regression": "logistic_regression.pkl.gz",
+        "Decision Tree": "decision_tree.pkl.gz",
+        "kNN": "knn.pkl.gz",
+        "Naive Bayes": "naive_bayes.pkl.gz",
+        "Random Forest (Ensemble)": "random_forest_ensemble.pkl.gz",
+        "XGBoost (Ensemble)": "xgboost_ensemble.pkl.gz",
     }
     loaded = {}
     for model_name, filename in model_files.items():
-        loaded[model_name] = joblib.load(ARTIFACTS_DIR / filename)
+        with gzip.open(ARTIFACTS_DIR / filename, "rb") as f:
+            loaded[model_name] = pickle.load(f)
     return loaded
 
 

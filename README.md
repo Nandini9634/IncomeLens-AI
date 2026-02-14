@@ -87,12 +87,12 @@ IncomeLens-AI/
 └── model/
     ├── train_models.py
     └── artifacts/
-        ├── logistic_regression.joblib
-        ├── decision_tree.joblib
-        ├── knn.joblib
-        ├── naive_bayes.joblib
-        ├── random_forest_ensemble.joblib
-        ├── xgboost_ensemble.joblib
+        ├── logistic_regression.pkl.gz
+        ├── decision_tree.pkl.gz
+        ├── knn.pkl.gz
+        ├── naive_bayes.pkl.gz
+        ├── random_forest_ensemble.pkl.gz
+        ├── xgboost_ensemble.pkl.gz
         ├── metrics_comparison.csv
         ├── metrics_detailed.json
         ├── tuning_summary.json
@@ -146,4 +146,3 @@ streamlit run app.py
 3. Click `New app`.
 4. Select repo/branch and `app.py`.
 5. Deploy.
-

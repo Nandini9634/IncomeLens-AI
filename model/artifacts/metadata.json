@@ -24,11 +24,6 @@
     "0": "<=50K",
     "1": ">50K"
   },
-  "class_distribution": {
-    "0": 37155,
-    "1": 11687
-  },
-  "imbalance_ratio_majority_to_minority": 3.1792,
   "test_size": 0.2,
   "random_state": 42
 }
