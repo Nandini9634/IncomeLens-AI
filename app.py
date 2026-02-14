@@ -1,9 +1,15 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
 from pathlib import Path
 
-import joblib
+try:
+    import joblib
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "joblib==1.5.3"])
+    import joblib
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
