@@ -10,7 +10,6 @@ Build an end-to-end machine learning classification system that predicts whether
 - **Task Type:** Binary Classification (`<=50K` vs `>50K`)
 - **Instances:** 48,842
 - **Features:** 14
-- **Why this dataset fits assignment constraints:** It satisfies the minimum size constraints (>=500 rows, >=12 features) and is directly importable in Python via `ucimlrepo`.
 
 ### Feature columns
 `age`, `workclass`, `fnlwgt`, `education`, `education-num`, `marital-status`, `occupation`, `relationship`, `race`, `sex`, `capital-gain`, `capital-loss`, `hours-per-week`, `native-country`
