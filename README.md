@@ -107,6 +107,21 @@ IncomeLens-AI/
 4. Confusion matrix and classification report
 5. ROC curve and Precision-Recall curve visualization
 
+## Error handling and troubleshooting
+- **Uploaded CSV missing required columns**  
+  App validates required feature columns from `metadata.json` and stops with a clear error listing missing columns.
+- **Uploaded CSV has no target column (`income`)**  
+  App still runs prediction and shows precomputed held-out confusion matrix/report/curves instead of failing.
+- **Unknown categorical values in uploaded CSV**  
+  Handled safely via `OneHotEncoder(handle_unknown=\"ignore\")` in the training pipeline.
+- **Missing values in input features**  
+  Handled using imputers in preprocessing (`median` for numeric, `most_frequent` for categorical).
+- **XGBoost runtime issue on macOS (`libomp` missing)**  
+  Install once with `brew install libomp` and run training using:  
+  `DYLD_LIBRARY_PATH=/opt/homebrew/opt/libomp/lib python model/train_models.py`
+- **Model artifacts not found**  
+  Run training first to regenerate artifacts in `model/artifacts/`, then restart Streamlit.
+
 ## Reproducibility
 - Random seed: `42`
 - Train-test split: `80:20` stratified
