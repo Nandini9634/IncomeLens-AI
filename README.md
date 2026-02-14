@@ -146,3 +146,14 @@ streamlit run app.py
 3. Click `New app`.
 4. Select repo/branch and `app.py`.
 5. Deploy.
+
+## Live Streamlit app
+`https://incomelens-ai.streamlit.app/`
+
+## Conclusion
+This project successfully implemented and evaluated six machine learning algorithms for Adult Income classification (`<=50K` vs `>50K`). Key findings from the analysis include:
+
+- **Best overall model:** XGBoost delivered the strongest combined performance across Accuracy, AUC, F1, and MCC.
+- **Effect of class imbalance:** Recall/precision trade-offs varied strongly by model; Naive Bayes captured positives well (high recall) but produced many false positives (low precision).
+- **Ensemble advantage:** Random Forest and XGBoost outperformed non-ensemble baselines in overall robustness.
+- **Deployment outcome:** The solution was packaged into a working Streamlit app with dataset upload, model selection, required metrics, confusion matrix/report, and ROC/PR visualizations.
